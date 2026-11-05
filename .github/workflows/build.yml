@@ -20,6 +20,9 @@ jobs:
           $p = Start-Process "$PWD/dist/QuadSync.Control.exe" -ArgumentList '--render',"$PWD/dist/panel.png" -PassThru
           $p.WaitForExit()
           if ($p.ExitCode -ne 0 -or !(Test-Path dist/panel.png)) { throw 'UI render failed' }
+      - name: Desktop startup and IPC smoke test
+        shell: pwsh
+        run: ./scripts/test-desktop.ps1
       - uses: actions/upload-artifact@v4
         with:
           name: QuadSyncAudio-win-x64

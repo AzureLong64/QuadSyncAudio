@@ -7,5 +7,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>QuadSync.Control</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
 </Project>

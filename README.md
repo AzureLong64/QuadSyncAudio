@@ -159,11 +159,12 @@ engine.Stop();
 ```powershell
 ctest --test-dir build -C Release --output-on-failure
 powershell -ExecutionPolicy Bypass -File scripts/test-pipe.ps1 -Engine .\dist\QuadSync.Engine.exe
+pwsh -File scripts/test-desktop.ps1
 ```
 
 核心测试验证脉冲定位、100 ms 极值、0.1 ms 分数延迟、每声道增益隔离、Master/静音平滑、环形缓冲的跨线程顺序、重采样及播放映射。漂移仿真运行四组 ±100 / ±500 ppm 独立时钟，每组模拟 10 分钟，检查补偿方向、64 帧触发、步进限制和最终误差。
 
-管道测试启动真实后台进程，验证设备枚举、参数校验、错误恢复、UTF-8 JSON 行分帧、PCM 帧校验、重连和关闭，不占用音频设备。GitHub Actions 在 Windows 上使用 MSVC 编译、执行这些测试并渲染 WPF 界面，上传完整运行目录。
+管道测试启动真实后台进程，验证设备枚举、参数校验、错误恢复、UTF-8 JSON 行分帧、PCM 帧校验、重连和关闭，不占用音频设备。桌面测试通过 Windows UI Automation 检查发布后的真实窗口、引擎连接、四路推子及正常退出，需要 PowerShell 7。GitHub Actions 在 Windows 上使用 MSVC 编译、执行这些测试并渲染 WPF 界面，上传完整运行目录。
 
 实际双声卡验证需准备两台支持目标格式的设备：用四通道 WAV 核对通道分流，用脉冲测量延迟，用长时间连续信号观察 Lag、补偿 ppm 与补零计数；物理相位测量应同时采集两台声卡的模拟输出。
 
