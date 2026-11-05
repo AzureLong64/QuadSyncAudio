@@ -1,0 +1,10 @@
+.tools/
+build/
+dist/
+artifacts/
+**/bin/
+**/obj/
+.vs/
+*.user
+*.log
+*.wav

@@ -1,0 +1,26 @@
+name: Windows build and tests
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Build, DSP tests and package
+        shell: pwsh
+        run: ./scripts/build.ps1
+      - name: Named pipe integration tests
+        shell: pwsh
+        run: ./scripts/test-pipe.ps1 -Engine "$PWD/dist/QuadSync.Engine.exe"
+      - name: Render WPF panel
+        shell: pwsh
+        run: |
+          $p = Start-Process "$PWD/dist/QuadSync.Control.exe" -ArgumentList '--render',"$PWD/dist/panel.png" -PassThru
+          $p.WaitForExit()
+          if ($p.ExitCode -ne 0 -or !(Test-Path dist/panel.png)) { throw 'UI render failed' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: QuadSyncAudio-win-x64
+          path: dist/
